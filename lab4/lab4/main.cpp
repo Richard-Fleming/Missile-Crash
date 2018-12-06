@@ -1,9 +1,11 @@
 /// <summary>
-/// Empty Project for SFML[2.5.0]
-/// 
-/// 
-/// @author Richard Fleming
-/// @date November 2018
+/// Author Richard Fleming C0021212 6/12/2018
+/// ---------------------------------------------------------
+/// Missile Command project using vector maths for collision
+/// ---------------------------------------------------------
+/// Estimated Time: 5 hours		Actual Time:
+/// Session One Start:		Session One End:
+/// Known Bugs:
 /// </summary>
 
 #ifdef _DEBUG 

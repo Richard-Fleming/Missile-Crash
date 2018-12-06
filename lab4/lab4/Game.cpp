@@ -1,4 +1,12 @@
-// author Peter Lowe
+/// <summary>
+/// Author Richard Fleming C0021212 6/12/2018
+/// ---------------------------------------------------------
+/// Missile Command project using vector maths for collision
+/// ---------------------------------------------------------
+/// Estimated Time: 5 hours		Actual Time:
+/// Session One Start:		Session One End:
+/// Known Bugs:
+/// </summary>
 
 #include "Game.h"
 #include <iostream>
@@ -10,8 +18,13 @@
 /// </summary>
 Game::Game() :
 	m_window{ sf::VideoMode{ 800, 600, 32 }, "Missile Crash" },
-	m_exitGame{ false }		//when true game will exit
+	m_exitGame{ false },		//when true game will exit
+
+	m_ground{ sf::Vector2f{ 800 , 100 } },
+	m_bunker{sf::Vector2f{50 , 50}}
+
 {
+	setupShapes();		// load ground shape and bunker shape
 	setupFontAndText();		// load font 
 	setupSprite();		// load texture
 }
@@ -87,7 +100,9 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color::White);
+	m_window.clear();
+	m_window.draw(m_ground);
+	m_window.draw(m_bunker);
 	m_window.draw(m_gameOverText);
 	m_window.display();
 }
@@ -110,6 +125,15 @@ void Game::setupFontAndText()
 	m_gameOverText.setFillColor(sf::Color::Black);
 	m_gameOverText.setOutlineThickness(3.0f);
 
+}
+
+void Game::setupShapes()		// setup the shapes for the ground and the bunker
+{
+	m_ground.setFillColor(sf::Color::Green);
+	m_ground.setPosition(0, 500);
+
+	m_bunker.setFillColor(sf::Color::Yellow);
+	m_bunker.setPosition(375, 450);
 }
 
 /// <summary>
