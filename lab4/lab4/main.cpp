@@ -3,8 +3,9 @@
 /// ---------------------------------------------------------
 /// Missile Command project using vector maths for collision
 /// ---------------------------------------------------------
-/// Estimated Time: 5 hours		Actual Time:
-/// Session One Start:		Session One End:
+/// Estimated Time: 8 hours		Actual Time:
+/// Session One Start: 9:30		Session One End: 11:00
+/// Session Two Start: 1:30 (8/12/18)		Session Two End:   (8/12/18)
 /// Known Bugs:
 /// </summary>
 
