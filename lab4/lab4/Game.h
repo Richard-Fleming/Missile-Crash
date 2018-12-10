@@ -12,6 +12,7 @@
 #define GAME
 
 #include <SFML/Graphics.hpp>
+#include "MyVector2.h"
 
 class Game
 {
@@ -25,34 +26,44 @@ private:
 	void processEvents();
 	void update(sf::Time t_deltaTime);
 	void render();
-
 	void setupShapes();
 	void setupFontAndText();
 	void setupSprite();
 	void processMouseEvents(sf::Event t_mouseEvent);
 	void asteroid();
+	void laserMove();
 
 	sf::RenderWindow m_window;		// main SFML window
 	sf::Font m_ArialBlackfont;		// font used by message
 	sf::Text m_gameOverText;		// text used for message on screen
 	
-	bool m_startClick{ false };		// The bools used to differentiate the clicks
-	bool m_endClick{ false };		// The bools used to differentiate the clicks
+	bool m_startClick = false;		// The bools used to differentiate the clicks
 	bool m_gameOver;		// control the game over screen
 	bool m_exitGame;		// control exiting game
 	
 	sf::RectangleShape m_ground;		// ground at the botom of he screen
 	sf::RectangleShape m_bunker;		// bunker on top of the ground that the laser fires from
-
 	sf::RectangleShape m_powerBar;		// power bar that controls the altitude of the laser shot
 	
-	sf::Vector2i m_mouseClick{ 0,0 };		// location of the mouse click and end point of the laser 
-	sf::Vector2i m_baseShot{ 375,450 };		// location of the start point of the laser
 	sf::VertexArray m_laser{ sf::Lines };		// line being drawn from the bunker
+	sf::Vector2f m_laserIncrement{};		// the amount the laser increments by
+	sf::Vector2f m_laserVelocity{};		// the velocity of the laser
+	sf::Vector2f m_laserCurrentPosition{};		// the laser's current position
+	sf::Vertex laserBase{};			// start point of laser at the bunker
+	sf::Vector2f laserStart{ 410, 500 };		// Sets the x and y co ordinates of the vector to the bunker
+	sf::Vector2f laserClick{};		// location of the mouse click and start of the laser
+	float laserSpeed = 4.0f;
 	
-	sf::Vector2i m_asteroidEntry{ 0,0 };		// location of the start point of the asteroid
-	sf::Vector2i m_asteroidCrash{ 800, 400 };		// location of the end point of the asteroid
-	sf::VertexArray m_asteroid{ sf::Lines };		// the line being from the top of the screen(the asteroid)
+	sf::VertexArray m_asteroid{ sf::Lines };		// line being drawn from the sky
+	sf::Vector2f m_asteroidIncrement{};		// the amount the asteroid increments by
+	sf::Vector2f m_asteroidVelocity{};		// the velocity of the laser
+	sf::Vector2f m_asteroidCurrentPosition{};		// the laser's current position
+	sf::Vertex asteroidBase{};			// start point of laser at the bunker
+	sf::Vector2f asteroidStart{ 410, 500 };		// Sets the x and y co ordinates of the vector to the bunker
+	sf::Vector2f asteroidClick{};		// location of the mouse click and start of the laser
+	float asteroidSpeed = 3.0f;
+
+	
 
 };
 

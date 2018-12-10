@@ -99,26 +99,15 @@ void Game::processEvents()
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime)
 {
+
+	if (m_startClick == true)
+	{
+		laserMove();
+	}
 	if (m_exitGame)
 	{
 		m_window.close();
 	}
-}
-
-/// <summary>
-/// draw the frame and then switch bufers
-/// </summary>
-void Game::render()
-{
-	m_window.clear();
-	//m_window.draw(m_gameOverText);
-
-	m_window.draw(m_ground);
-	m_window.draw(m_bunker);
-	m_window.draw(m_powerBar);
-	m_window.draw(m_laser);
-	m_window.draw(m_asteroid);
-	m_window.display();
 }
 
 /// <summary>
@@ -151,6 +140,8 @@ void Game::setupShapes()		// setup the shapes for the ground, the bunker and the
 
 	m_powerBar.setFillColor(sf::Color::Red);
 	m_powerBar.setPosition(25, 550);
+
+	//m_laser.append(sf::Vertex{ laserStart, sf::Color::Blue });
 }
 
 /// <summary>
@@ -161,52 +152,59 @@ void Game::setupSprite()
 
 }
 
-void Game::processMouseEvents(sf::Event t_mouseEvent)		// draws the laser being fired
+void Game::processMouseEvents(sf::Event t_mouseEvent)		// when you click the mouse
 {
-	sf::Vertex laserBase{};			// start point of laser at the bunker
-	sf::Vertex laserEnd{};		// end point of laser
-	sf::Vector2f laserStart{};		// location of the base of the laser
-	sf::Vector2f laserClick{};		// location of the mouse click and start of the laser
-
 	if (sf::Mouse::Left == t_mouseEvent.mouseButton.button)
-	{
-		if (m_startClick == true)
-		{
-			m_laser.clear();			// reset the laser clear out the vertex array
-			m_startClick = false;		// Resets the bool for the click so that it's ready to be used again
-		}
-
-		else if (m_startClick == false )		// The Click
+	{	
+		if (m_startClick == false)
 		{
 			laserClick = sf::Vector2f{ static_cast<float>(t_mouseEvent.mouseButton.x),static_cast<float>(t_mouseEvent.mouseButton.y) };// Sets the x and y co ordinates of the vector
-			laserEnd = sf::Vertex{ sf::Vector2f{ laserClick } , sf::Color::White };		// Sets the color of the vector, and as a result half the laser
-			m_laser.append(laserEnd);		// draws the laser
-
-			laserStart = sf::Vector2f{ 410, 500 };		// Sets the x and y co ordinates of the vector to the bunker
 			laserBase = sf::Vertex{ laserStart , sf::Color::Blue };		// Sets the color of the vector, and as a result half the laser
-			m_laser.append(laserBase);		// draws the laser
-
+			m_laserCurrentPosition = laserStart;
 			m_startClick = true;		// sets the first click to be true for future inputs
 		}
 	}
 }
 
+void Game::laserMove()
+{
+	if (m_laserCurrentPosition.y >= laserClick.y)
+	{
+		m_laser.append(laserBase);		// draws the laser
+		m_laserIncrement = laserClick - laserStart;		// calculates the distance between
+		m_laserVelocity = vectorUnitVector(m_laserIncrement) * laserSpeed;
+		m_laserCurrentPosition += m_laserVelocity;
+		m_laser.append( sf::Vertex(m_laserCurrentPosition, sf::Color::White));		// draws the laser
+	}
+	else
+	{
+		m_startClick = false;
+		m_laser.clear();
+	}
+}
+
 void Game::asteroid()
 {
-	sf::Vertex asteroidSpawn{};		// start point of the asteroid
-	sf::Vertex asteroidEnd{};		// end point of the asteroid
-	sf::Vector2f asteroidStart{};		// location of the asteroid's start point
-	sf::Vector2f asteroidCrash{};		// location of where the asteroid lands
-	int count = 0;		// the time between when the asteroid's start falling
-	if (count == 0)
-	{
-		asteroidStart = sf::Vector2f{ 0,0 };		// sets the coordinates of the asteroid's start point
-		asteroidSpawn = sf::Vertex{ asteroidStart, sf::Color::Red };		// sets the colour of half of the line drawn by the asteroid
-		m_asteroid.append(asteroidStart);		// draws the asteroid
+	
+}
 
-		asteroidCrash = sf::Vector2f{ 800, 400 };		// Sets the end coordinates of the asteroid
-		asteroidEnd = sf::Vertex{ asteroidCrash , sf::Color::Yellow };		// sets the color of the other half of the line
-		m_asteroid.append(asteroidEnd);		// draws the asteroid
-		
+
+
+/// <summary>
+/// draw the frame and then switch bufers
+/// </summary>
+void Game::render()
+{
+	m_window.clear();
+	//m_window.draw(m_gameOverText);
+
+	m_window.draw(m_ground);
+	m_window.draw(m_bunker);
+	m_window.draw(m_powerBar);
+	if (m_startClick == true)
+	{
+		m_window.draw(m_laser);
 	}
+	m_window.draw(m_asteroid);
+	m_window.display();
 }
